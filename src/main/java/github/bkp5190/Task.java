@@ -14,14 +14,46 @@ public class Task {
         this.dueDate = dueDate;
         this.status = status;
     }
-    public void setTaskName(String taskName) {this.taskName = taskName;}
-    public void setDescription(String description) {this.description = description;}
-    public void setDueDate(LocalDate dueDate) {this.dueDate = dueDate;}
-    public void setStatus(TaskStatus status) {this.status = status;}
-    public String getTaskName() {return taskName;}
-    public String getDescription() {return description;}
-    public LocalDate getDueDate() {return dueDate;}
-    public TaskStatus getStatus() {return status;}
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    @Override
+    public String toString() {
+        return "Task Name: " + taskName +
+                "\nDescription: " + description +
+                "\nDue Date: " + dueDate +
+                "\nStatus: " + status + "\n";
+    }
 }
 
 enum TaskStatus {
