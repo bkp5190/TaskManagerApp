@@ -1,4 +1,4 @@
-name: Java Task Manager Application Build and Run
+name: Java Application Build and Test
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-run:
+  compile:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,11 +19,22 @@ jobs:
           distribution: 'adopt'
           java-version: '20'  # Adjust the Java version as needed
 
-      - name: Build Java application
-        run: |
-          mvn clean install
+      - name: Compile Java application
+        run: mvn compile
 
-      - name: Run Java application
-        run: |
-          env
-          java -cp target/TaskManagerApp-1.0-SNAPSHOT.jar:lib/\* github.bkp5190.TaskManagerApp
+  test:
+    needs: compile
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '20'  # Adjust the Java version as needed
+
+      - name: Run tests
+        run: mvn test

@@ -1,36 +1,40 @@
 package github.bkp5190;
 
 import java.time.LocalDate;
-import java.util.Scanner;
 
 public class TaskManagerApp {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        TaskManager taskManager = new TaskManager();
+    private final TaskManager taskManager;
+    private final UserIO userIO;
 
+    public TaskManagerApp(TaskManager taskManager, UserIO userIO) {
+        this.taskManager = taskManager;
+        this.userIO = userIO;
+    }
+
+    public void run() {
         while (true) {
             System.out.println("1. Add Task");
             System.out.println("2. Print Tasks");
             System.out.println("3. Update Task");
             System.out.println("4. Exit");
             System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline
+            int choice = userIO.readInt();
+            userIO.readLine(); // Consume the newline
 
             switch (choice) {
                 case 1 -> {
                     System.out.print("Enter task name: ");
-                    String taskName = scanner.nextLine();
+                    String taskName = userIO.readLine();
                     System.out.print("Enter description: ");
-                    String description = scanner.nextLine();
+                    String description = userIO.readLine();
                     System.out.print("Enter due date (yyyy-MM-dd): ");
-                    String dueDateStr = scanner.nextLine();
+                    String dueDateStr = userIO.readLine();
                     LocalDate dueDate = LocalDate.parse(dueDateStr);
                     System.out.println("Enter status:");
                     System.out.println("1. TO_DO");
                     System.out.println("2. IN_PROGRESS");
                     System.out.println("3. COMPLETED");
-                    int statusInput = scanner.nextInt();
+                    int statusInput = userIO.readInt();
                     TaskStatus status;
                     switch (statusInput) {
                         case 1 -> status = TaskStatus.TO_DO;
@@ -47,14 +51,14 @@ public class TaskManagerApp {
                 case 2 -> taskManager.printTasks();
                 case 3 -> {
                     System.out.println("Enter the name of the task you wish to update: ");
-                    String taskName = scanner.nextLine();
+                    String taskName = userIO.readLine();
                     Task updateTask = taskManager.getTaskName(taskName);
                     if (updateTask == null) {
                         System.out.println("Task not found.");
                         continue; // Skip the rest of the loop and start over
                     }
                     System.out.print("Enter new status (TO_DO, IN_PROGRESS, COMPLETED): ");
-                    String statusInput = scanner.nextLine().trim().toUpperCase();
+                    String statusInput = userIO.readLine().trim().toUpperCase();
                     try {
                         TaskStatus status = TaskStatus.valueOf(statusInput);
                         updateTask.setStatus(status);
@@ -70,5 +74,14 @@ public class TaskManagerApp {
                 default -> System.out.println("Invalid choice. Please try again.");
             }
         }
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        TaskManager taskManager = new TaskManager();
+        UserIO userIO = new ConsoleUserIO(); // Your UserIO implementation
+        TaskManagerApp app = new TaskManagerApp(taskManager, userIO);
+        app.run();
     }
 }
